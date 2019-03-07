@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_dark"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".View.MainActivity"
     tools:showIn="@layout/app_bar_main">
@@ -16,10 +17,29 @@
         android:layout_marginTop="277dp"
         android:layout_marginEnd="146dp"
         android:layout_marginBottom="278dp"
-        android:background="@drawable/side_nav_bar"
+        android:background="@mipmap/camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_menu_camera" />
+        app:layout_constraintVertical_bias="0.0"
+        />
+
+    <TextView
+        android:id="@+id/tv_Camera"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="153dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="95dp"
+        android:text="Encontra la carta del restaurante!"
+        android:textColor="#FFFFFF"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/buttonCamera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
