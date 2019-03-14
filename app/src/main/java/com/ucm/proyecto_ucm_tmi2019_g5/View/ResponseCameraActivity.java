@@ -59,8 +59,8 @@ public class ResponseCameraActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startJob();
-                //Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), ScrapingActivity.class);
+                startActivity(intent);
             }
         });
     }
