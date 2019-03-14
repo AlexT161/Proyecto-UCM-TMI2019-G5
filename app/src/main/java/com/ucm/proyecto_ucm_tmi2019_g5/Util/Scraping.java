@@ -14,8 +14,9 @@ public class Scraping {
     public static final int maxPages = 2;
     public static final String GOOGLE_SEARCH_URL = "https://www.google.com/search";
 
-    public static String doScraping() throws IOException {
-        String searchTerm = "carta el tenedor tako daruma madrid";
+    public static String doScraping(String restaurante) throws IOException {
+        restaurante = "Daruma Tako";
+        String searchTerm = "carta el tenedor " + restaurante + " madrid";
 
         String searchURL = GOOGLE_SEARCH_URL + "?q=" + searchTerm.replace(' ', '-') + "&num=" + 1;
         Document doc = null;
