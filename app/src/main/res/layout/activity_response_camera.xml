@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.ResponseCameraActivity">
+
+    <ImageView
+        android:id="@+id/iv_takenPhoto"
+        android:layout_width="411dp"
+        android:layout_height="731dp"
+        android:layout_marginBottom="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:color/background_light" />
+
+    <Button
+        android:id="@+id/btn_yesButton"
+        android:layout_width="197dp"
+        android:layout_height="93dp"
+        android:layout_marginTop="6dp"
+        android:text="YES"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_noButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_takenPhoto" />
+
+    <Button
+        android:id="@+id/btn_noButton"
+        android:layout_width="197dp"
+        android:layout_height="93dp"
+        android:layout_marginTop="6dp"
+        android:text="NO"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_yesButton"
+        app:layout_constraintTop_toBottomOf="@+id/iv_takenPhoto" />
+</android.support.constraint.ConstraintLayout>

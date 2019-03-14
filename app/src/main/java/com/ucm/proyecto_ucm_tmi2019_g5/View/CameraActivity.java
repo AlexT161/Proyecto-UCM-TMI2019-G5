@@ -1,5 +1,6 @@
 package com.ucm.proyecto_ucm_tmi2019_g5.View;
 
+import android.content.Intent;
 import android.graphics.Picture;
 import android.hardware.Camera;
 import android.os.Environment;
@@ -25,7 +26,9 @@ public class CameraActivity extends AppCompatActivity {
     private static final int MEDIA_TYPE_VIDEO = 2;
     private Camera mCamera;
     private CameraPreview mPreview;
+    private String photoName;
     //private Picture picture;
+    private File pictureFile;
     private static final String TAG = CameraActivity.class.getSimpleName();
 
 
@@ -38,10 +41,10 @@ public class CameraActivity extends AppCompatActivity {
 
         // Create our Preview view and set it as the content of our activity.
         mPreview = new CameraPreview(this, mCamera);
-        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+        FrameLayout preview = findViewById(R.id.camera_preview);
         preview.addView(mPreview);
 
-        Button buttonCapture = (Button) findViewById(R.id.buttonCapture);
+        Button buttonCapture = findViewById(R.id.buttonCapture);
         buttonCapture.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -52,7 +55,7 @@ public class CameraActivity extends AppCompatActivity {
                             @Override
                             public void onPictureTaken(byte[] data, Camera camera) {
 
-                                File pictureFile = getOutputMediaFile(1);
+                                pictureFile = getOutputMediaFile(1);
                                 if (pictureFile == null) {
                                     Log.d(TAG, "Error creating media file, check storage permissions");
                                     return;
@@ -60,8 +63,14 @@ public class CameraActivity extends AppCompatActivity {
 
                                 try {
                                     FileOutputStream fos = new FileOutputStream(pictureFile);
+                                    photoName = pictureFile.getAbsolutePath();
+                                    System.out.println("PATH: "+photoName);
                                     fos.write(data);
                                     fos.close();
+                                    Intent intent = new Intent(getApplicationContext(), ResponseCameraActivity.class);
+                                    System.out.println("PATH: "+ photoName);
+                                    intent.putExtra("fotoPath", photoName);
+                                    startActivity(intent);
                                 } catch (FileNotFoundException e) {
                                     Log.d(TAG, "File not found: " + e.getMessage());
                                 } catch (IOException e) {
@@ -71,6 +80,9 @@ public class CameraActivity extends AppCompatActivity {
                         };
 
                         mCamera.takePicture(null, null, mPicture);
+                        //PhotoName = pictureFile.getAbsolutePath();
+                        //mCamera.release();
+
                     }
                 }
         );
@@ -122,5 +134,6 @@ public class CameraActivity extends AppCompatActivity {
 
         return mediaFile;
     }
+
 
 }
