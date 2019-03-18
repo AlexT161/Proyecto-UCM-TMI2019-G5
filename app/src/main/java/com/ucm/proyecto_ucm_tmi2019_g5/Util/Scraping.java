@@ -14,8 +14,8 @@ public class Scraping {
     public static final int maxPages = 2;
     public static final String GOOGLE_SEARCH_URL = "https://www.google.com/search";
 
-    public static String doScraping(String restaurante) throws IOException {
-        restaurante = "Daruma Tako";
+    public static String doScraping() throws IOException {
+        String restaurante = "Daruma Tako";
         String searchTerm = "carta el tenedor " + restaurante + " madrid";
 
         String searchURL = GOOGLE_SEARCH_URL + "?q=" + searchTerm.replace(' ', '-') + "&num=" + 1;
@@ -33,7 +33,7 @@ public class Scraping {
             url = linkHref.substring(7, linkHref.indexOf("&"));
         }
 
-        System.out.println(url);
+        //System.out.println(url);
         Connection response = Jsoup.connect(url).timeout(60000).ignoreContentType(true).ignoreHttpErrors(true);
         response.userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11");
         response.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
@@ -42,24 +42,16 @@ public class Scraping {
         response.header("Accept-Language", "en-US,en;q=0.8");
         response.header("Connection", "keep-alive");
 
-        Document doc1 = null;
-        try {
-            doc1 = response.get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Document elTenedor = response.get();
 
-        //System.out.println("---------Comida---------");
-        Elements comida = doc1.select("div.restaurantTabContent-section");
-        //System.out.println(comida.text().replace("€", "€\n"));
-        //System.out.println("---------Bebida---------");
-        Elements bebidas = doc1.select("section.restaurantTabContent-section");
-        //System.out.println(bebidas.text().replace("€", "€\n"));
-        return "---------Comida---------\n\n" +
-                comida.text().replace("€", "€\n") +
-                "\n" +
-                "---------Bebida---------\n\n" +
-                bebidas.text().replace("€", "€\n") +
-                "\n";
+        //System.out.println("---------------------Comida---------------------");
+        Elements food = elTenedor.select("li.cardCategory");
+        Elements foodText = food.select("div.cardCategory-itemTitle");
+        Elements foodPrice = food.select("div.cardCategory-itemPrice");
+        String foodString = "";
+        for (int i = 0; i < foodText.size(); i++) {
+            foodString += foodPrice.get(i).text() + " - " +foodText.get(i).text() + "\n";
+        }
+        return foodString;
     }
 }
