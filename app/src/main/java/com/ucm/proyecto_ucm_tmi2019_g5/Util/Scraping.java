@@ -1,13 +1,13 @@
 package com.ucm.proyecto_ucm_tmi2019_g5.Util;
 
 
-import java.io.IOException;
 import org.jsoup.Connection;
-import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.io.IOException;
 
 public class Scraping {
 
