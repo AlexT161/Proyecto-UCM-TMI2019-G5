@@ -13,13 +13,14 @@ import static com.ucm.proyecto_ucm_tmi2019_g5.Util.Scraping.*;
 
 public class ScrapingActivity extends AppCompatActivity {
 
-    TextView menu;
+    TextView tvMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scraping);
-        menu = findViewById(R.id.tv_menu);
+        tvMenu = findViewById(R.id.tv_menu);
+        /*
         Thread thread = new Thread(new Runnable() {
 
             @Override
@@ -33,5 +34,11 @@ public class ScrapingActivity extends AppCompatActivity {
         });
 
         thread.start();
+        */
+        Bundle extras = getIntent().getExtras();
+        String menu = extras.getString("menu");
+        System.out.println("menu in Scraping Activity: " + menu);
+
+        tvMenu.setText(menu);
     }
 }

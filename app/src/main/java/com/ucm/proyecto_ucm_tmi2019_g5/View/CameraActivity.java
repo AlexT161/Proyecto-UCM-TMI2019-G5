@@ -19,8 +19,10 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+import com.ucm.proyecto_ucm_tmi2019_g5.Controller.PhotoController;
 import com.ucm.proyecto_ucm_tmi2019_g5.R;
 
+import java.io.IOException;
 import java.util.List;
 
 public class CameraActivity extends AppCompatActivity {
@@ -30,6 +32,8 @@ public class CameraActivity extends AppCompatActivity {
     private ImageView imageView;
     private TextView txtView;
     private Bitmap imageBitmap;
+    private String menu;
+    public PhotoController pc = new PhotoController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,9 @@ public class CameraActivity extends AppCompatActivity {
             @Override
             public void onSuccess(FirebaseVisionText firebaseVisionText) {
                 processTxt(firebaseVisionText);
+                Intent intent = new Intent(getApplicationContext(), ScrapingActivity.class);
+                intent.putExtra("menu", menu);
+                startActivity(intent);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -90,15 +97,19 @@ public class CameraActivity extends AppCompatActivity {
 
     private void processTxt(FirebaseVisionText text) {
         List<FirebaseVisionText.TextBlock> blocks = text.getTextBlocks();
+        String restaurantName = null;
         if (blocks.size() == 0) {
             Toast.makeText(CameraActivity.this, "No Text :(", Toast.LENGTH_LONG).show();
             return;
         }
         for (FirebaseVisionText.TextBlock block : text.getTextBlocks()) {
-            String txt = block.getText();
+            restaurantName = block.getText();
             txtView.setTextSize(24);
-            txtView.setText(txt);
+            txtView.setText(restaurantName);
         }
+        System.out.println(restaurantName);
+        menu = pc.getRestaurantMenu(restaurantName);
+        System.out.println("menu on PROCESSTXT: " + menu);
     }
 
 }

@@ -1,6 +1,10 @@
 package com.ucm.proyecto_ucm_tmi2019_g5.Util;
 
 
+import android.os.AsyncTask;
+
+import com.ucm.proyecto_ucm_tmi2019_g5.Controller.PhotoController;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -9,13 +13,26 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-public class Scraping {
+public class Scraping extends AsyncTask<String, String, String> {
 
     public static final int maxPages = 2;
     public static final String GOOGLE_SEARCH_URL = "https://www.google.com/search";
 
-    public static String doScraping() throws IOException {
-        String restaurante = "Daruma Tako";
+    @Override
+    protected String doInBackground(String... params) {
+        String menu = null;
+        try{
+            System.out.println("params: " + params[0]);
+            menu = doScraping(params[0]);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return menu;
+    }
+
+    public static String doScraping(String restaurante) throws IOException {
+        //restaurante = "Daruma Tako";
         String searchTerm = "carta el tenedor " + restaurante + " madrid";
 
         String searchURL = GOOGLE_SEARCH_URL + "?q=" + searchTerm.replace(' ', '-') + "&num=" + 1;
