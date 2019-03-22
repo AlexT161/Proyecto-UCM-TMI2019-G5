@@ -1,139 +1,104 @@
 package com.ucm.proyecto_ucm_tmi2019_g5.View;
 
+
 import android.content.Intent;
-import android.graphics.Picture;
-import android.hardware.Camera;
-import android.os.Environment;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.ucm.proyecto_ucm_tmi2019_g5.R;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 public class CameraActivity extends AppCompatActivity {
 
-    private static final int MEDIA_TYPE_IMAGE = 1;
-    private static final int MEDIA_TYPE_VIDEO = 2;
-    private Camera mCamera;
-    private CameraPreview mPreview;
-    private String photoName;
-    //private Picture picture;
-    private File pictureFile;
-    private static final String TAG = CameraActivity.class.getSimpleName();
-
+    private Button snapBtn;
+    private Button detectBtn;
+    private ImageView imageView;
+    private TextView txtView;
+    private Bitmap imageBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-        // Create an instance of Camera
-        mCamera = getCameraInstance();
+        snapBtn = findViewById(R.id.snapBtn);
+        detectBtn = findViewById(R.id.detectBtn);
+        imageView = findViewById(R.id.imageView);
+        txtView = findViewById(R.id.txtView);
 
-        // Create our Preview view and set it as the content of our activity.
-        mPreview = new CameraPreview(this, mCamera);
-        FrameLayout preview = findViewById(R.id.camera_preview);
-        preview.addView(mPreview);
-
-        Button buttonCapture = findViewById(R.id.buttonCapture);
-        buttonCapture.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // get an image from the camera
-                        Camera.PictureCallback mPicture = new Camera.PictureCallback() {
-
-                            @Override
-                            public void onPictureTaken(byte[] data, Camera camera) {
-
-                                pictureFile = getOutputMediaFile(1);
-                                if (pictureFile == null) {
-                                    Log.d(TAG, "Error creating media file, check storage permissions");
-                                    return;
-                                }
-
-                                try {
-                                    FileOutputStream fos = new FileOutputStream(pictureFile);
-                                    photoName = pictureFile.getAbsolutePath();
-                                    System.out.println("PATH: "+photoName);
-                                    fos.write(data);
-                                    fos.close();
-                                    Intent intent = new Intent(getApplicationContext(), ResponseCameraActivity.class);
-                                    System.out.println("PATH: "+ photoName);
-                                    intent.putExtra("fotoPath", photoName);
-                                    startActivity(intent);
-                                } catch (FileNotFoundException e) {
-                                    Log.d(TAG, "File not found: " + e.getMessage());
-                                } catch (IOException e) {
-                                    Log.d(TAG, "Error accessing file: " + e.getMessage());
-                                }
-                            }
-                        };
-
-                        mCamera.takePicture(null, null, mPicture);
-                        //PhotoName = pictureFile.getAbsolutePath();
-                        //mCamera.release();
-
-                    }
-                }
-        );
-    }
-
-    public static Camera getCameraInstance(){
-        Camera c = null;
-        try {
-            c = Camera.open(); // attempt to get a Camera instance
-        }
-        catch (Exception e){
-            // Camera is not available (in use or does not exist)
-        }
-        return c; // returns null if camera is unavailable
-    }
-
-
-
-    private static File getOutputMediaFile(int type){
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
-
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "MyCameraApp");
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
-                Log.d("MyCameraApp", "failed to create directory");
-                return null;
+        snapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dispatchTakePictureIntent();
             }
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE){
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
-            System.out.println(mediaStorageDir.getPath());
-        } else if(type == MEDIA_TYPE_VIDEO) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "VID_"+ timeStamp + ".mp4");
-        } else {
-            return null;
-        }
-
-        return mediaFile;
+        });
+        detectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                detectTxt();
+            }
+        });
     }
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            imageBitmap = (Bitmap) extras.get("data");
+            imageView.setImageBitmap(imageBitmap);
+        }
+    }
+
+    private void detectTxt() {
+        FirebaseVisionImage image = FirebaseVisionImage .fromBitmap(imageBitmap);
+        FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
+        detector.processImage(image).addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+            @Override
+            public void onSuccess(FirebaseVisionText firebaseVisionText) {
+                processTxt(firebaseVisionText);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
+
+    private void processTxt(FirebaseVisionText text) {
+        List<FirebaseVisionText.TextBlock> blocks = text.getTextBlocks();
+        if (blocks.size() == 0) {
+            Toast.makeText(CameraActivity.this, "No Text :(", Toast.LENGTH_LONG).show();
+            return;
+        }
+        for (FirebaseVisionText.TextBlock block : text.getTextBlocks()) {
+            String txt = block.getText();
+            txtView.setTextSize(24);
+            txtView.setText(txt);
+        }
+    }
 
 }

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "875923740772",
+    "firebase_url": "https://proyecto-ucm-tmi2019-g5.firebaseio.com",
+    "project_id": "proyecto-ucm-tmi2019-g5",
+    "storage_bucket": "proyecto-ucm-tmi2019-g5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875923740772:android:14a624c57848ac1a",
+        "android_client_info": {
+          "package_name": "com.ucm.proyecto_ucm_tmi2019_g5"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875923740772-9omgiojjjopirjma24sacie1nr6g1cat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKRMj7ljQXuaHvzHbz7BSNhpzenubSnn0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
