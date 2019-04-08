@@ -21,8 +21,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+
+import com.google.ar.core.ArCoreApk;
+import com.google.ar.core.Session;
+import com.google.ar.core.exceptions.UnavailableUserDeclinedInstallationException;
 import com.ucm.proyecto_ucm_tmi2019_g5.R;
+import com.ucm.proyecto_ucm_tmi2019_g5.Util.CameraPermissionHelper;
 
 
 public class MainActivity extends AppCompatActivity
@@ -31,6 +37,9 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 0;
+    private boolean mUserRequestedInstall = true;
+    Session mSession = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +49,10 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         ImageButton buttonCamera= findViewById(R.id.buttonCamera);
         // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
+        if (!CameraPermissionHelper.hasCameraPermission(this)) {
+            CameraPermissionHelper.requestCameraPermission(this);
+        }
+        /*if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -64,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             // Permission has already been granted
         }
-
+*/
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +94,31 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Make sure ARCore is installed and up to date.
+        try {
+            if (mSession == null) {
+                switch (ArCoreApk.getInstance().requestInstall(this, mUserRequestedInstall)) {
+                    case INSTALLED:
+                        // Success, create the AR session.
+                        mSession = new Session(this);
+                        break;
+                    case INSTALL_REQUESTED:
+                        // Ensures next invocation of requestInstall() will either return
+                        // INSTALLED or throw an exception.
+                        mUserRequestedInstall = false;
+                        return;
+                }
+            }
+        } catch (UnavailableUserDeclinedInstallationException e) {
+            // Display an appropriate message to the user and return gracefully.
+            Toast.makeText(this, "TODO: handle exception " + e, Toast.LENGTH_LONG)
+                    .show();
+            return;
+        } catch (Exception e) {  // Current catch statements.
+            e.printStackTrace();
+            return;  // mSession is still null.
+        }
 
         buttonCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,8 +186,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /*
     @Override
-    public void onRequestPermissionsResult(int requestCode,
+        public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
@@ -168,6 +206,20 @@ public class MainActivity extends AppCompatActivity
 
             // other 'case' lines to check for other
             // permissions this app might request.
+        }
+    }
+    */
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] results) {
+        if (!CameraPermissionHelper.hasCameraPermission(this)) {
+            Toast.makeText(this, "Camera permission is needed to run this application", Toast.LENGTH_LONG)
+                    .show();
+            if (!CameraPermissionHelper.shouldShowRequestPermissionRationale(this)) {
+                // Permission denied with checking "Do not ask again".
+                CameraPermissionHelper.launchPermissionSettings(this);
+            }
+            finish();
         }
     }
 }
