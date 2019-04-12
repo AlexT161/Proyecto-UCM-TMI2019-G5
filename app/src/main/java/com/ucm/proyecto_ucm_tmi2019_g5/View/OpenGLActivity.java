@@ -12,9 +12,12 @@ public class OpenGLActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_opengl);
-        openGLView = (OpenGLView) findViewById(R.id.openGLView);
+        openGLView = new OpenGLView(this);
+        setContentView(openGLView);
+
     }
+
+
 
     @Override
     protected void onPause() {

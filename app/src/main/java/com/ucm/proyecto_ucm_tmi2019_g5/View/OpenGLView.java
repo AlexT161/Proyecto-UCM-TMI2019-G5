@@ -9,6 +9,9 @@ import com.ucm.proyecto_ucm_tmi2019_g5.Util.OpenGLRenderer;
 
 public class OpenGLView extends GLSurfaceView {
 
+    private OpenGLRenderer renderer;
+
+
     public OpenGLView(Context context) {
         super(context);
         init();
@@ -22,7 +25,8 @@ public class OpenGLView extends GLSurfaceView {
     private void init() {
         setEGLContextClientVersion(2);
         setPreserveEGLContextOnPause(true);
-        setRenderer(new OpenGLRenderer());
+        renderer = new OpenGLRenderer();
+        setRenderer(renderer);
     }
 }
 
