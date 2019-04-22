@@ -99,7 +99,7 @@ public class CameraActivity extends AppCompatActivity {
         List<FirebaseVisionText.TextBlock> blocks = text.getTextBlocks();
         String restaurantName = null;
         if (blocks.size() == 0) {
-            Toast.makeText(CameraActivity.this, "No Text :(", Toast.LENGTH_LONG).show();
+            Toast.makeText(CameraActivity.this, "Mamma mia :(", Toast.LENGTH_LONG).show();
             return;
         }
         for (FirebaseVisionText.TextBlock block : text.getTextBlocks()) {
