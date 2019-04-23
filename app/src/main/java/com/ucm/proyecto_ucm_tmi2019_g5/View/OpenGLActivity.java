@@ -3,8 +3,6 @@ package com.ucm.proyecto_ucm_tmi2019_g5.View;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.ucm.proyecto_ucm_tmi2019_g5.R;
-
 public class OpenGLActivity extends AppCompatActivity {
 
     private OpenGLView openGLView;
@@ -14,10 +12,9 @@ public class OpenGLActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         openGLView = new OpenGLView(this);
         setContentView(openGLView);
-
+        openGLView.requestFocus();
+        openGLView.setFocusableInTouchMode(true);
     }
-
-
 
     @Override
     protected void onPause() {

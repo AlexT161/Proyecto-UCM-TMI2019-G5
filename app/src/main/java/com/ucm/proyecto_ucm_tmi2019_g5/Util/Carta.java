@@ -1,5 +1,6 @@
 package com.ucm.proyecto_ucm_tmi2019_g5.Util;
 
+
 import android.opengl.GLES20;
 
 import java.nio.ByteBuffer;
@@ -34,10 +35,10 @@ public class Carta {
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
     static float squareCoords[] = {
-            -0.6f,  0.95f, 0.0f,   // top left
-            -0.6f, -0.95f, 0.0f,   // bottom left
-            0.6f, -0.95f, 0.0f,   // bottom right
-            0.6f,  0.95f, 0.0f }; // top right
+            -0.5f,  0.85f, 0.0f,   // top left
+            -0.5f, -0.85f, 0.0f,   // bottom left
+            0.5f, -0.85f, 0.0f,   // bottom right
+            0.5f,  0.85f, 0.0f }; // top right
     private final short drawOrder[] = { 0, 1, 2, 0, 2, 3 }; // order to draw vertices
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
     float color[] = { 1f, 1f, 1f, 1.0f };
@@ -97,10 +98,10 @@ public class Carta {
         GLES20.glUniform4fv(mColorHandle, 1, color, 0);
         // get handle to shape's transformation matrix
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
-        OpenGLRenderer.checkGlError("glGetUniformLocation");
+//        OpenGLRenderer.checkGlError("glGetUniformLocation");
         // Apply the projection and view transformation
         GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
-        OpenGLRenderer.checkGlError("glUniformMatrix4fv");
+//        OpenGLRenderer.checkGlError("glUniformMatrix4fv");
         // Draw the square
         GLES20.glDrawElements(
                 GLES20.GL_TRIANGLES, drawOrder.length,
