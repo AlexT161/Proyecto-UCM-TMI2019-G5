@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ucm.proyecto_ucm_tmi2019_g5.Controller.PhotoController;
 import com.ucm.proyecto_ucm_tmi2019_g5.R;
 import com.ucm.proyecto_ucm_tmi2019_g5.Util.FileUtil;
 import com.ucm.proyecto_ucm_tmi2019_g5.Util.Scraping;
@@ -31,6 +32,9 @@ public class ScrapingActivity extends AppCompatActivity {
     private FileUtil fu;
     private ImageView imageViewShowScreenshot;
     private View actualView;
+    private PhotoController pc = new PhotoController();
+    String restaurantName = null;
+    String menu;
 
 
 
@@ -38,29 +42,22 @@ public class ScrapingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scraping);
-        tvMenu = findViewById(R.id.tv_menu);
+        Bundle extras = getIntent().getExtras();
+        restaurantName = extras.getString("restaurantName");
+        System.out.println("NOME DEL RISTORANTE: " + restaurantName);
+        try {
+            menu = pc.getRestaurantMenu(restaurantName);
+        } catch (IOException e) {
+            //System.out.println("No se ha encontrado la carta :( \n por favor inténtalo de nuevo.");
+            Toast.makeText(ScrapingActivity.this, "No se ha encontrado la carta :( \n por favor inténtalo de nuevo.", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+
+        }
+        System.out.println("\n\nLISTA PIATTI MENU: " + menu);
+
         imageViewShowScreenshot = findViewById(R.id.imageViewShowScreenshot);
         actualView = findViewById(android.R.id.content);
-        /*
-        Thread thread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try  {
-                    menu.setText(doScraping());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        thread.start();
-        */
-
-        Bundle extras = getIntent().getExtras();
-        String menu = extras.getString("menu");
-//        System.out.println("menu in Scraping Activity: " + menu);
-
+        tvMenu = findViewById(R.id.tv_menu);
         tvMenu.setText(menu);
 
         try {
@@ -80,8 +77,22 @@ public class ScrapingActivity extends AppCompatActivity {
                 FileUtil.getInstance().storeBitmap(bitmap, path);
             }
         });
-
-//        imageView.setImageBitmap(b);
     }
 
 }
+
+/*
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try  {
+                    menu.setText(doScraping());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+*/

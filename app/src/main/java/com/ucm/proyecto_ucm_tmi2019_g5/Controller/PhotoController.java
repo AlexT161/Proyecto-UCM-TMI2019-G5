@@ -7,6 +7,8 @@ import android.view.View;
 import com.ucm.proyecto_ucm_tmi2019_g5.Model.Restaurant;
 import com.ucm.proyecto_ucm_tmi2019_g5.Util.Scraping;
 
+import java.io.IOException;
+
 public class PhotoController {
 
     public Restaurant restaurant;
@@ -25,7 +27,7 @@ public class PhotoController {
         return restaurant;
     }
 
-    public String getRestaurantMenu(String restaurante) {
+    public String getRestaurantMenu(String restaurante) throws IOException {
         //TODO metodo para llamar metodo para el scraping
 
         System.out.println("restaurante in controller " + restaurante);
