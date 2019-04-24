@@ -1,6 +1,8 @@
 package com.ucm.proyecto_ucm_tmi2019_g5.Controller;
 
+import android.graphics.Bitmap;
 import android.support.v4.view.AsyncLayoutInflater;
+import android.view.View;
 
 import com.ucm.proyecto_ucm_tmi2019_g5.Model.Restaurant;
 import com.ucm.proyecto_ucm_tmi2019_g5.Util.Scraping;
@@ -47,5 +49,4 @@ public class PhotoController {
 
         return menu;
     }
-
 }
