@@ -33,6 +33,7 @@ public class CameraActivity extends AppCompatActivity {
     private TextView txtView;
     private Bitmap imageBitmap;
     private String menu;
+    String restaurantName = null;
     public PhotoController pc = new PhotoController();
 
     @Override
@@ -84,7 +85,7 @@ public class CameraActivity extends AppCompatActivity {
             public void onSuccess(FirebaseVisionText firebaseVisionText) {
                 processTxt(firebaseVisionText);
                 Intent intent = new Intent(getApplicationContext(), ScrapingActivity.class);
-                intent.putExtra("menu", menu);
+                intent.putExtra("restaurantName", restaurantName);
                 startActivity(intent);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -97,9 +98,9 @@ public class CameraActivity extends AppCompatActivity {
 
     private void processTxt(FirebaseVisionText text) {
         List<FirebaseVisionText.TextBlock> blocks = text.getTextBlocks();
-        String restaurantName = null;
+        //String restaurantName = null;
         if (blocks.size() == 0) {
-            Toast.makeText(CameraActivity.this, "No Text :(", Toast.LENGTH_LONG).show();
+            Toast.makeText(CameraActivity.this, "Mamma mia :(", Toast.LENGTH_LONG).show();
             return;
         }
         for (FirebaseVisionText.TextBlock block : text.getTextBlocks()) {
@@ -108,8 +109,8 @@ public class CameraActivity extends AppCompatActivity {
             txtView.setText(restaurantName);
         }
         System.out.println(restaurantName);
-        menu = pc.getRestaurantMenu(restaurantName);
-        System.out.println("menu on PROCESSTXT: " + menu);
+        //menu = pc.getRestaurantMenu(restaurantName);
+        //System.out.println("menu on PROCESSTXT: " + menu);
     }
 
 }

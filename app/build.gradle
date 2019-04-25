@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.ucm.proyecto_ucm_tmi2019_g5"
-        compileSdkVersion 28
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -36,8 +37,6 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.11.3'
     implementation 'com.google.firebase:firebase-ml-vision:19.0.2'
     implementation 'com.google.firebase:firebase-core:16.0.8'
-
-
 
 
 
