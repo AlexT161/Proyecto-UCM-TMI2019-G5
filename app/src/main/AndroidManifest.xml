@@ -39,6 +39,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".View.OpenGLActivity" ></activity>
+        <activity android:name=".View.TextureActivity" ></activity>
+
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"

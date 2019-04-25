@@ -1,6 +1,7 @@
 package com.ucm.proyecto_ucm_tmi2019_g5.View;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -74,10 +75,14 @@ public class ScrapingActivity extends AppCompatActivity {
                 Bitmap bitmap = ScreenshotUtil.getInstance().takeScreenshotForView(actualView); // Take ScreenshotUtil for activity
                 imageViewShowScreenshot.setImageBitmap(bitmap);
                 String path = Environment.getExternalStorageDirectory().toString() + "/ScreenshotTest.png";
+                System.out.println("PERCORSO DEL FILE = " + path);
                 FileUtil.getInstance().storeBitmap(bitmap, path);
             }
         });
+    Intent intent = new Intent(getApplicationContext(), TextureActivity.class);
+    startActivity(intent);
     }
+
 
 }
 
