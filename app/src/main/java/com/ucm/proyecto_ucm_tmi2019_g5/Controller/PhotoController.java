@@ -19,7 +19,7 @@ public class PhotoController {
 
     public PhotoController(Restaurant restaurant, String menu) {
         this.restaurant = restaurant;
-        PhotoController.menu = menu;
+        this.menu = menu;
     }
 
     public Restaurant getRestaurantName(){

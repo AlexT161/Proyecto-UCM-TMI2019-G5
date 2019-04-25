@@ -37,6 +37,9 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.11.3'
     implementation 'com.google.firebase:firebase-ml-vision:19.0.2'
     implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.karumi:dexter:5.0.0'
+
+
 
 
 
