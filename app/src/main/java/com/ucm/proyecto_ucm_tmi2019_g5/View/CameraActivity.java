@@ -40,6 +40,7 @@ public class CameraActivity extends AppCompatActivity {
         setContentView(R.layout.activity_camera);
         snapBtn = findViewById(R.id.snapBtn);
         detectBtn = findViewById(R.id.detectBtn);
+        detectBtn.setEnabled(false);
         imageView = findViewById(R.id.imageView);
         txtView = findViewById(R.id.txtView);
 
@@ -62,6 +63,7 @@ public class CameraActivity extends AppCompatActivity {
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            detectBtn.setEnabled(true);
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
@@ -73,6 +75,7 @@ public class CameraActivity extends AppCompatActivity {
             imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imageBitmap);
         }
+
     }
 
     private void detectTxt() {
@@ -104,6 +107,7 @@ public class CameraActivity extends AppCompatActivity {
             restaurantName = block.getText();
             txtView.setTextSize(24);
             txtView.setText(restaurantName);
+
         }
         System.out.println(restaurantName);
         //menu = pc.getRestaurantMenu(restaurantName);
