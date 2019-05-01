@@ -32,9 +32,7 @@ public class CameraActivity extends AppCompatActivity {
     private ImageView imageView;
     private TextView txtView;
     private Bitmap imageBitmap;
-    private String menu;
     String restaurantName = null;
-    public PhotoController pc = new PhotoController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +93,6 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
     }
-
     private void processTxt(FirebaseVisionText text) {
         List<FirebaseVisionText.TextBlock> blocks = text.getTextBlocks();
         //String restaurantName = null;

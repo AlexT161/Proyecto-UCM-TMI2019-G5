@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#005e94"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".View.CameraActivity">
@@ -13,8 +14,12 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
-        android:layout_marginBottom="4dp"
-        android:text="Snap" />
+        android:layout_marginBottom="0dp"
+        android:background="#e98504"
+        android:text="Snap"
+        android:textColor="#FFFFFF"
+        android:textSize="24dp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/detectBtn"
@@ -22,9 +27,13 @@
         android:layout_height="105dp"
         android:layout_alignTop="@+id/snapBtn"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        android:text="Detect" />
+        android:background="#e98504"
+        android:text="Detect"
+        android:textColor="#FFFFFF"
+        android:textSize="24dp"
+        android:textStyle="bold" />/>
 
     <ImageView
         android:id="@+id/imageView"
@@ -32,13 +41,18 @@
         android:layout_height="360dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        app:srcCompat="@android:color/background_light" />
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp" />
 
     <TextView
         android:id="@+id/txtView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="104dp" />
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="203dp"
+        android:text="Encontra la carta del restaurante!"
+        android:textColor="#FFFFFF"
+        android:textSize="24dp"
+        android:textStyle="bold" />
 </RelativeLayout>
