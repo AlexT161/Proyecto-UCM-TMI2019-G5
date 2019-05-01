@@ -19,16 +19,15 @@ public class PhotoController {
 
     public PhotoController(Restaurant restaurant, String menu) {
         this.restaurant = restaurant;
-        PhotoController.menu = menu;
+        this.menu = menu;
     }
 
     public Restaurant getRestaurantName(){
-        //TODO metodo para usar Google vision API
         return restaurant;
     }
 
     public String getRestaurantMenu(String restaurante) {
-        //TODO metodo para llamar metodo para el scraping
+        //TODO sistemare il metodo per ricavare il menu dallo Scraping
 
         System.out.println("restaurante in controller " + restaurante);
         /*Thread thread = new Thread(new Runnable() {
