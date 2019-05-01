@@ -1,6 +1,7 @@
 package com.ucm.proyecto_ucm_tmi2019_g5.View;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
@@ -22,6 +23,7 @@ public class TextureActivity extends AppCompatActivity
 {
     private GLSurfaceView surface;
     private TextureRenderer renderer;
+    private Bitmap b;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -34,8 +36,9 @@ public class TextureActivity extends AppCompatActivity
         renderer = new TextureRenderer();
         surface.setEGLContextClientVersion(2);
         surface.setRenderer(renderer);
-
         setContentView(surface);
+        //Intent intent = getIntent();
+        //b = (Bitmap) intent.getParcelableExtra("menuImage");
     }
 
     @Override
@@ -185,6 +188,7 @@ public class TextureActivity extends AppCompatActivity
 
             // Load a bitmap from resources folder and pass it to OpenGL
             // in the end, we recycle it to free unneeded resources
+
             Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.menu);
             GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, b, 0);
             b.recycle();
@@ -289,5 +293,14 @@ public class TextureActivity extends AppCompatActivity
             GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        startActivity(new Intent(this, CameraActivity.class));
+        finish();
+
     }
 }
