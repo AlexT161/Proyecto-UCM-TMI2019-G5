@@ -5,9 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/menu"
-    tools:context=".View.ScrapingActivity"><![CDATA[>
-
-    ]]>
+    tools:context=".View.ScrapingActivity">
 
     <ImageView
         android:id="@+id/imageViewShowScreenshot"

@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.ucm.proyecto_ucm_tmi2019_g5.R;
 
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -23,7 +24,7 @@ public class TextureActivity extends AppCompatActivity
 {
     private GLSurfaceView surface;
     private TextureRenderer renderer;
-    private Bitmap b;
+    private String pathImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,8 +38,8 @@ public class TextureActivity extends AppCompatActivity
         surface.setEGLContextClientVersion(2);
         surface.setRenderer(renderer);
         setContentView(surface);
-        //Intent intent = getIntent();
-        //b = (Bitmap) intent.getParcelableExtra("menuImage");
+        Bundle extras = getIntent().getExtras();
+        pathImage = extras.getString("path");
     }
 
     @Override
@@ -188,10 +189,14 @@ public class TextureActivity extends AppCompatActivity
 
             // Load a bitmap from resources folder and pass it to OpenGL
             // in the end, we recycle it to free unneeded resources
+            File imgFile = new File(pathImage);
+            if(imgFile.exists()){
+                Bitmap b = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                //Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.menu);
+                GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, b, 0);
+                b.recycle();
+            }
 
-            Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.menu);
-            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, b, 0);
-            b.recycle();
         }
 
         @Override
