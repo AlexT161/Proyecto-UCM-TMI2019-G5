@@ -46,14 +46,9 @@ public class ScrapingActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         restaurantName = extras.getString("restaurantName");
         System.out.println("NOME DEL RISTORANTE: " + restaurantName);
-        try {
-            menu = pc.getRestaurantMenu(restaurantName);
-        } catch (IOException e) {
-            //System.out.println("No se ha encontrado la carta :( \n por favor inténtalo de nuevo.");
-            Toast.makeText(ScrapingActivity.this, "No se ha encontrado la carta :( \n por favor inténtalo de nuevo.", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
 
-        }
+        menu = pc.getRestaurantMenu(restaurantName);
+
         System.out.println("\n\nLISTA PIATTI MENU: " + menu);
 
         imageViewShowScreenshot = findViewById(R.id.imageViewShowScreenshot);

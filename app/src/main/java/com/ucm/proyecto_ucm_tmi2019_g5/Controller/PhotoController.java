@@ -19,7 +19,7 @@ public class PhotoController {
 
     public PhotoController(Restaurant restaurant, String menu) {
         this.restaurant = restaurant;
-        this.menu = menu;
+        PhotoController.menu = menu;
     }
 
     public Restaurant getRestaurantName(){
@@ -27,7 +27,7 @@ public class PhotoController {
         return restaurant;
     }
 
-    public String getRestaurantMenu(String restaurante) throws IOException {
+    public String getRestaurantMenu(String restaurante) {
         //TODO metodo para llamar metodo para el scraping
 
         System.out.println("restaurante in controller " + restaurante);
