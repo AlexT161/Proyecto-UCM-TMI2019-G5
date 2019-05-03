@@ -84,10 +84,11 @@ public class CameraActivity extends AppCompatActivity {
         detector.processImage(image).addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
             @Override
             public void onSuccess(FirebaseVisionText firebaseVisionText) {
-                processTxt(firebaseVisionText);
-                Intent intent = new Intent(getApplicationContext(), ScrapingActivity.class);
-                intent.putExtra("restaurantName", restaurantName);
-                startActivity(intent);
+                if(processTxt(firebaseVisionText)){
+                    Intent intent = new Intent(getApplicationContext(), ScrapingActivity.class);
+                    intent.putExtra("restaurantName", restaurantName);
+                    startActivity(intent);
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -96,12 +97,12 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
     }
-    private void processTxt(FirebaseVisionText text) {
+    private boolean processTxt(FirebaseVisionText text) {
         List<FirebaseVisionText.TextBlock> blocks = text.getTextBlocks();
         //String restaurantName = null;
         if (blocks.size() == 0) {
-            Toast.makeText(CameraActivity.this, "Mamma mia :(", Toast.LENGTH_LONG).show();
-            return;
+            Toast.makeText(CameraActivity.this, "No ha sido posible reconocer el nombre del restaurante, inténtalo de nuevo", Toast.LENGTH_LONG).show();
+            return false;
         }
         for (FirebaseVisionText.TextBlock block : text.getTextBlocks()) {
             restaurantName = block.getText();
@@ -110,8 +111,6 @@ public class CameraActivity extends AppCompatActivity {
 
         }
         System.out.println(restaurantName);
-        //menu = pc.getRestaurantMenu(restaurantName);
-        //System.out.println("menu on PROCESSTXT: " + menu);
+        return true;
     }
-
 }

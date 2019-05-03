@@ -17,10 +17,10 @@ public class Scraping extends AsyncTask<String, String, String> {
 
     public static final int maxPages = 2;
     public static final String GOOGLE_SEARCH_URL = "https://www.google.com/search";
+    String menu = null;
 
     @Override
     protected String doInBackground(String... params) {
-        String menu = null;
         try{
             System.out.println("params: " + params[0]);
             menu = doScraping(params[0]);
