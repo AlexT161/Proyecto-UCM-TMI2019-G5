@@ -72,7 +72,8 @@ public class ScrapingActivity extends AppCompatActivity {
                 String path = Environment.getExternalStorageDirectory().toString() + "/ScreenshotTest.png";
                 System.out.println("PERCORSO DEL FILE = " + path);
                 FileUtil.getInstance().storeBitmap(bitmap, path);
-                GoToTextureActivity(path);
+                GoToGestureActivity(path);
+                //GoToTextureActivity(path);
             }
         });
     }
@@ -83,7 +84,11 @@ public class ScrapingActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
+    private void GoToGestureActivity(String path) {
+        Intent intent = new Intent(getApplicationContext(), GestureActivity.class);
+        intent.putExtra("path", path);
+        startActivity(intent);
+    }
 }
 
 /*

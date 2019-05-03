@@ -302,10 +302,10 @@ public class TextureActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed()
-    {
-        super.onBackPressed();
-        startActivity(new Intent(this, CameraActivity.class));
-        finish();
+        {
+            super.onBackPressed();
+            startActivity(new Intent(this, CameraActivity.class));
+            finish();
 
     }
 }

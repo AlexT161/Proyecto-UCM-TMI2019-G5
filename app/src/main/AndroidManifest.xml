@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ucm.proyecto_ucm_tmi2019_g5">
 
@@ -26,6 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".View.GestureActivity"></activity>
+
         <meta-data
             android:name="com.google.ar.core"
             android:value="required" />
@@ -43,8 +44,7 @@
         </activity>
         <activity
             android:name=".View.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".View.CameraActivity"
             android:theme="@style/AppTheme.NoActionBar">

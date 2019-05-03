@@ -1,9 +1,17 @@
 package com.ucm.proyecto_ucm_tmi2019_g5.Util;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.opengl.GLUtils;
 import android.opengl.Matrix;
 import android.util.Log;
+
+import java.io.File;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -18,12 +26,33 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mViewMatrix = new float[16];
     private final float[] mRotationMatrix = new float[16];
     public volatile float mAngle;
+    private int[] textures = new int[1];
+    private int programHandle = -1;
 
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         mCarta = new Carta();
+        GLES20.glGenTextures(1, textures, 0);
+
+        if (textures[0] == GLES20.GL_FALSE)
+            throw new RuntimeException("Error loading texture");
+
+        // bind the texture and set parameters
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[0]);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
+
+        // Load a bitmap from resources folder and pass it to OpenGL
+        // in the end, we recycle it to free unneeded resources
+        File imgFile = new File("/Users/simone/AndroidStudioProjects/Proyecto-UCM-TMI2019-G5/app/src/main/res/drawable/menu.jpg");
+        if(imgFile.exists()){
+            Bitmap b = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            //Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.menu);
+            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, b, 0);
+            b.recycle();
+        }
     }
     @Override
     public void onDrawFrame(GL10 unused) {
@@ -43,6 +72,32 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
         // Note that the mMVPMatrix factor *must be first* in order
         // for the matrix multiplication product to be correct.
         // Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
+        final int FLOAT_SIZE = 4;
+        final int POSITION_SIZE = 2;
+        final int TEXTURE_SIZE = 2;
+        final int TOTAL_SIZE = POSITION_SIZE + TEXTURE_SIZE;
+        final int POSITION_OFFSET = 0;
+        final int TEXTURE_OFFSET = 2;
+        int aPosition = GLES20.glGetAttribLocation(programHandle, "aPosition");
+        int aTexPos = GLES20.glGetAttribLocation(programHandle, "aTexPos");
+
+        // Again, a FloatBuffer will be used to pass the values
+        FloatBuffer b = ByteBuffer.allocateDirect(mCarta.squareCoords.length* FLOAT_SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        b.put(mCarta.squareCoords.length);
+
+        // Position of our image
+        b.position(POSITION_OFFSET);
+        GLES20.glVertexAttribPointer(aPosition, POSITION_SIZE, GLES20.GL_FLOAT, false, TOTAL_SIZE * FLOAT_SIZE, b);
+        GLES20.glEnableVertexAttribArray(aPosition);
+
+        // Positions of the texture
+        b.position(TEXTURE_OFFSET);
+        GLES20.glVertexAttribPointer(aTexPos, TEXTURE_SIZE, GLES20.GL_FLOAT, false, TOTAL_SIZE * FLOAT_SIZE, b);
+        GLES20.glEnableVertexAttribArray(aTexPos);
+
+        // Clear the screen and draw the rectangle
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
     }
     @Override
     public void onSurfaceChanged(GL10 unused, int width, int height) {
