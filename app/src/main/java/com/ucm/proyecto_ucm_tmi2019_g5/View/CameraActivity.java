@@ -31,7 +31,7 @@ public class CameraActivity extends AppCompatActivity {
     private Button detectBtn;
     private ImageView imageView;
     private TextView txtView;
-    private Bitmap imageBitmap;
+    private Bitmap imageBitmap = null;
     String restaurantName = null;
 
     @Override
@@ -63,7 +63,6 @@ public class CameraActivity extends AppCompatActivity {
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            detectBtn.setEnabled(true);
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
@@ -74,7 +73,9 @@ public class CameraActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imageBitmap);
+            detectBtn.setEnabled(true);
         }
+
 
     }
 
