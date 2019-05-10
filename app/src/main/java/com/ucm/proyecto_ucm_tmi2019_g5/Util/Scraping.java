@@ -33,7 +33,7 @@ public class Scraping extends AsyncTask<String, String, String> {
 
     public static String doScraping(String restaurante) throws IOException {
         //restaurante = "Daruma Tako";
-        String searchTerm = "carta el tenedor " + restaurante + " madrid";
+        String searchTerm = restaurante + "el tenedor carta";
         String searchURL = GOOGLE_SEARCH_URL + "?q=" + searchTerm.replace(' ', '-') + "&num=" + 1;
         Document doc = null;
         try {
